@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Be My Valentine 💖</title>
+
+<style>
+body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+    text-align: center;
+    padding: 20px;
+    background: linear-gradient(45deg,#ff9a9e,#fad0c4);
+}
+
+/* FILM STRIP BACKGROUND */
+#filmstrip {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 400%;
+    height: 100%;
+    display: flex;
+    z-index: -1;
+    transition: 1s;
+}
+
+.frame {
+    flex: 1;
+    background-size: cover;
+    background-position: center;
+    filter: brightness(0.45);
+    border-left: 10px solid black;
+    border-right: 10px solid black;
+}
+
+/* Title */
+h1 {
+    color: white;
+    font-size: clamp(1.8em, 5vw, 2.8em);
+    text-shadow: 2px 2px 5px #ff4d6d;
+}
+
+/* Buttons */
+button {
+    padding: 12px 25px;
+    font-size: clamp(16px, 4vw, 20px);
+    margin: 10px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    background-color: #ff4d6d;
+    color: white;
+    width: 130px;
+}
+
+button:hover {
+    background-color: #ff1e4d;
+    transform: scale(1.1);
+}
+
+/* Message */
+#message {
+    margin-top: 20px;
+    font-size: clamp(18px, 4vw, 24px);
+    color: white;
+    display: none;
+}
+
+/* Countdown */
+#countdown{
+    color:white;
+    font-size:20px;
+    margin-top:10px;
+}
+
+/* Floating hearts */
+.heart {
+    position: absolute;
+    pointer-events: none;
+    animation: float 6s linear infinite;
+}
+
+@keyframes float {
+    0% { transform: translateY(100vh); opacity: 1; }
+    100% { transform: translateY(-10vh); opacity: 0; }
+}
+
+/* Explosion hearts */
+.explosion {
+    position: absolute;
+    pointer-events: none;
+    font-size: 20px;
+    animation: explode 1s ease-out forwards;
+}
+
+@keyframes explode {
+    to {
+        transform: translate(var(--x), var(--y));
+        opacity: 0;
+    }
+}
+
+/* Sparkles */
+.sparkle{
+    position:absolute;
+    color:white;
+    animation:sparkle 1.2s linear forwards;
+}
+
+@keyframes sparkle{
+    0%{opacity:1; transform:scale(1);}
+    100%{opacity:0; transform:scale(2) translateY(-20px);}
+}
+
+/* Love Letter Popup */
+#letterPopup {
+    position: fixed;
+    background: white;
+    color: #ff4d6d;
+    padding: 20px;
+    border-radius: 15px;
+    max-width: 300px;
+    display: none;
+    box-shadow: 0 0 20px rgba(0,0,0,0.3);
+}
+</style>
+</head>
+
+<body>
+
+<!-- FILM STRIP -->
+<div id="filmstrip">
+    <div class="frame" style="background-image:url('pic1.jpg')"></div>
+    <div class="frame" style="background-image:url('pic2.jpg')"></div>
+    <div class="frame" style="background-image:url('pic3.jpg')"></div>
+    <div class="frame" style="background-image:url('pic4.jpg')"></div>
+    <div class="frame" style="background-image:url('pic5.jpg')"></div>
+    <div class="frame" style="background-image:url('pic6.jpg')"></div>
+    <div class="frame" style="background-image:url('pic7.jpg')"></div>
+    <div class="frame" style="background-image:url('pic8.jpg')"></div>
+    <div class="frame" style="background-image:url('pic9.jpg')"></div>
+</div>
+
+<!-- Music -->
+<audio id="bgMusic" loop>
+<source src="love.mp3" type="audio/mpeg">
+</audio>
+
+<h1>You're gonna be my Valentine ❤️</h1>
+
+<div>
+<button onclick="showLove()">Yes</button>
+<button onclick="showLove()">Yes</button>
+</div>
+
+<div id="message">
+Yay, I love you so much!! 💖<br>
+Things to bring on Sunday:<br>
+Yourself :D
+</div>
+
+<div id="countdown"></div>
+
+<div id="letterPopup">
+<h2>💌 letter for u💖</h2>
+<p>
+Hi love,<br><br>
+I miss you so much 💖<br>
+I'm Happy I get to celebrate valentines with you. I know things have been rough but kakayanin natin to. Keep praying and trusting God.<br><br>
+See you Tomorrow 😘
+</p>
+<button onclick="closeLetter()">Close</button>
+</div>
+
+<script>
+const music=document.getElementById("bgMusic");
+
+/* YES BUTTON */
+function showLove(){
+document.getElementById("message").style.display="block";
+document.getElementById("letterPopup").style.display="block";
+music.play();
+}
+
+function closeLetter(){
+document.getElementById("letterPopup").style.display="none";
+}
+
+/* FILM STRIP SLIDE */
+let pos=0;
+setInterval(()=>{
+pos-=100;
+if(pos<=-300) pos=0;
+document.getElementById("filmstrip").style.transform=
+"translateX("+pos+"vw)";
+},3000);
+
+/* Floating hearts */
+setInterval(()=>{
+let h=document.createElement("div");
+h.className="heart";
+h.innerHTML="💖";
+h.style.left=Math.random()*100+"vw";
+h.style.fontSize=(15+Math.random()*25)+"px";
+document.body.appendChild(h);
+setTimeout(()=>h.remove(),6000);
+},400);
+
+/* Click effects */
+document.addEventListener("click",e=>{
+music.play();
+
+/* hearts */
+for(let i=0;i<10;i++){
+let h=document.createElement("div");
+h.className="explosion";
+h.innerHTML="💗";
+h.style.left=e.clientX+"px";
+h.style.top=e.clientY+"px";
+h.style.setProperty("--x",(Math.random()*200-100)+"px");
+h.style.setProperty("--y",(Math.random()*200-100)+"px");
+document.body.appendChild(h);
+setTimeout(()=>h.remove(),1000);
+}
+
+/* sparkles */
+for(let i=0;i<12;i++){
+let s=document.createElement("div");
+s.className="sparkle";
+s.innerHTML="✨";
+s.style.left=(e.clientX+Math.random()*40-20)+"px";
+s.style.top=(e.clientY+Math.random()*40-20)+"px";
+document.body.appendChild(s);
+setTimeout(()=>s.remove(),1200);
+}
+});
+
+/* COUNTDOWN */
+const date=new Date("Feb 15, 2026 18:00:00").getTime();
+
+setInterval(()=>{
+let now=new Date().getTime();
+let gap=date-now;
+
+let d=Math.floor(gap/(1000*60*60*24));
+let h=Math.floor((gap%(1000*60*60*24))/(1000*60*60));
+let m=Math.floor((gap%(1000*60*60))/(1000*60));
+let s=Math.floor((gap%(1000*60))/1000);
+
+document.getElementById("countdown").innerHTML=
+"💞 Countdown to our date: "+d+"d "+h+"h "+m+"m "+s+"s";
+},1000);
+</script>
+
+</body>
+</html>
